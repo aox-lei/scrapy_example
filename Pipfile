@@ -4,6 +4,8 @@ url = "http://mirrors.aliyun.com/pypi/simple/"
 verify_ssl = false
 
 [dev-packages]
+yapf = "*"
+pylint = "*"
 
 [packages]
 scrapy = "*"
