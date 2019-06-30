@@ -14,7 +14,6 @@ BOT_NAME = 'house_spider'
 SPIDER_MODULES = ['house_spider.spiders']
 NEWSPIDER_MODULE = 'house_spider.spiders'
 
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 
@@ -52,9 +51,10 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'house_spider.middlewares.HouseSpiderDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    'house_spider.middlewares.HouseSpiderDownloaderMiddleware': 543,
+    # 'house_spider.middlewares.ProxyMiddleware': 544,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'house_spider.pipelines.HouseSpiderPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'house_spider.pipelines.HouseSpiderPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

@@ -10,6 +10,7 @@ pylint = "*"
 [packages]
 scrapy = "*"
 ipython = "*"
+mongoengine = "*"
 
 [requires]
 python_version = "3.6"
