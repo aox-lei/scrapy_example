@@ -6,7 +6,9 @@ from house_spider.items import FangSpiderEsfListItem
 class FangspiderSpider(scrapy.Spider):
     name = 'FangSpider'
     allowed_domains = ['fang.com']
-    start_urls = ['https://esf.fang.com/']
+
+    def start_requests(self):
+        yield scrapy.Request('https://esf.fang.com/')
 
     def parse(self, response):
         lists = response.css('div.shop_list > dl')
