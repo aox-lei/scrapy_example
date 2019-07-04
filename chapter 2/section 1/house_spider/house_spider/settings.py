@@ -53,7 +53,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'house_spider.middlewares.HouseSpiderDownloaderMiddleware': 543,
-    # 'house_spider.middlewares.ProxyMiddleware': 544,
+    'house_spider.middlewares.ProxyMiddleware': 544,
 }
 
 # Enable or disable extensions
