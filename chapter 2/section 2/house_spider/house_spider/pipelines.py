@@ -6,12 +6,16 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from house_spider.mongo import House, Community
 from house_spider.items import HouseItem, CommunityItem
-
+from scrapy.exceptions import DropItem
 
 class HouseSpiderPipeline(object):
     def process_item(self, item, spider):
         if type(item) != HouseItem:
             return item
+
+        if int(item.get('total_price')) > 100:
+            raise DropItem('价格太高了! 不要！！！')
+        
         try:
             house_mongo = House(**item)
             house_mongo.save()
