@@ -11,6 +11,7 @@ pylint = "*"
 scrapy = "*"
 ipython = "*"
 mongoengine = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.6"
