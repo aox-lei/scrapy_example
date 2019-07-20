@@ -14,7 +14,7 @@ class FangSpider(scrapy.Spider):
             'Referer':
             'https://esf.fang.com',
             'Cookie':
-            'city=www; global_cookie=xb3v8gs98s0mnw6y3f5j1hc3l18jxiksz43; Integrateactivity=notincludemc; lastscanpage=0; resourceDetail=1; newhouse_user_guid=12A3BCB9-C819-D67E-8AD6-D5371E1D87A1; budgetLayer=1%7Cbj%7C2019-07-08%2015%3A39%3A27; new_loginid=94872610; jiatxShopWindow=1; logGuid=3f82f8f2-a4bc-4009-becd-d1187573d236; __utmc=147393320; integratecover=1; Captcha=3532666A7A6778315353656258644A547A7662554D3271414278626C474B656A45356A777836367141555755777147716949493853374F4A4A4F5248375A687457526B637A7037363442773D; token=71171399203a485da7348f078aecc4d6; __utma=147393320.1940903320.1561876301.1562917475.1562943419.10; __utmz=147393320.1562943419.10.7.utmcsr=fang.com|utmccn=(referral)|utmcmd=referral|utmcct=/; g_sourcepage=undefined; __utmt_t0=1; __utmt_t1=1; __utmt_t2=1; __utmb=147393320.9.10.1562943419; unique_cookie=U_v34abub1hgenoppl7zffkp50l1wjxzsp1nd*23',
+            'global_cookie=ts9lekodlmqrdd8ikgqjno2r91zjy08to2g; budgetLayer=1%7Cbj%7C2019-07-12%2023%3A15%3A42; lastscanpage=0; resourceDetail=1; city=www; Integrateactivity=notincludemc; logGuid=1d7ea639-c548-4b51-b36b-5f33d15bb8fc; __utma=147393320.1729056910.1562944544.1562944544.1563609816.2; __utmc=147393320; __utmz=147393320.1563609816.2.2.utmcsr=search.fang.com|utmccn=(referral)|utmcmd=referral|utmcct=/captcha-verify/redirect; __utmt_t0=1; __utmt_t1=1; __utmt_t2=1; g_sourcepage=undefined; unique_cookie=U_tixt3tpiedn0brb7m4t9pl9fd2zjyb8wtwc*4; __utmb=147393320.12.10.1563609816'
         }
     }
 
@@ -41,19 +41,14 @@ class FangSpider(scrapy.Spider):
         if not tr_list:
             tr_list = response.css('div.houseList dl')
             info_css_rule = 'dd > p.title > a::attr("href")'
-        headers = {
-            'cookie':
-            'city=www; global_cookie=xb3v8gs98s0mnw6y3f5j1hc3l18jxiksz43; Integrateactivity=notincludemc; lastscanpage=0; resourceDetail=1; newhouse_user_guid=12A3BCB9-C819-D67E-8AD6-D5371E1D87A1; budgetLayer=1%7Cbj%7C2019-07-08%2015%3A39%3A27; new_loginid=94872610; jiatxShopWindow=1; logGuid=3f82f8f2-a4bc-4009-becd-d1187573d236; __utmc=147393320; integratecover=1; Captcha=3532666A7A6778315353656258644A547A7662554D3271414278626C474B656A45356A777836367141555755777147716949493853374F4A4A4F5248375A687457526B637A7037363442773D; token=71171399203a485da7348f078aecc4d6; __utma=147393320.1940903320.1561876301.1562917475.1562943419.10; __utmz=147393320.1562943419.10.7.utmcsr=fang.com|utmccn=(referral)|utmcmd=referral|utmcct=/; g_sourcepage=undefined; __utmt_t0=1; __utmt_t1=1; __utmt_t2=1; __utmb=147393320.9.10.1562943419; unique_cookie=U_v34abub1hgenoppl7zffkp50l1wjxzsp1nd*23'
-        }
+
         if tr_list:
             for info in tr_list:
                 info_url_css = info.css(info_css_rule)
                 if info_url_css:
-                    yield response.follow(
-                        info_url_css[0],
-                        headers=headers,
-                        callback=self.parse_house_info,
-                        dont_filter=True)
+                    yield response.follow(info_url_css[0],
+                                          callback=self.parse_house_info,
+                                          dont_filter=True)
 
         # if response.meta['page'] == 1:
         #     total_pages = response.css(
@@ -68,7 +63,7 @@ class FangSpider(scrapy.Spider):
         #             yield self.request_list(page=_page)
 
     def parse_house_info(self, response):
-        
+
         item = HouseItemLoader(HouseItem(), response)
         item.add_css('title', '#lpname > h1::text')
         item.add_css(
