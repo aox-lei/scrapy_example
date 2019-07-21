@@ -63,7 +63,6 @@ class FangSpider(scrapy.Spider):
         #             yield self.request_list(page=_page)
 
     def parse_house_info(self, response):
-
         item = HouseItemLoader(HouseItem(), response)
         item.add_css('title', '#lpname > h1::text')
         item.add_css(
@@ -82,10 +81,10 @@ class FangSpider(scrapy.Spider):
         item.add_value('url', response.url)
 
         # 处理图片
-        images_list = response.css('div#bigImgBox div')
+        images_list = response.css('ul.litImg li')
         if images_list:
             for image in images_list:
-                item.add_css('image_urls', 'img::attr("src")')
+                item.add_css('image_urls', 'img::attr("data-src2")')
 
         yield item.load_item()
 

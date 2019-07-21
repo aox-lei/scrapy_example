@@ -7,7 +7,7 @@
 
 import scrapy
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import TakeFirst, MapCompose, Join, Compose
+from scrapy.loader.processors import TakeFirst, MapCompose, Join, Compose, Identity
 
 
 def remove_blank(value):
@@ -20,7 +20,7 @@ class DefaultItemLoader(ItemLoader):
 
 
 class HouseItemLoader(DefaultItemLoader):
-    pass
+    image_urls_out = Identity()
 
 
 class HouseItem(scrapy.Item):
@@ -34,6 +34,7 @@ class HouseItem(scrapy.Item):
     community = scrapy.Field()  # 小区
     url = scrapy.Field()  # 详情页url
     image_urls = scrapy.Field()
+    image_paths = scrapy.Field()
     images = scrapy.Field()
 
 

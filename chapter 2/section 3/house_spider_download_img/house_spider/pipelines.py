@@ -13,12 +13,14 @@ class HouseSpiderPipeline(object):
     def process_item(self, item, spider):
         if type(item) != HouseItem:
             return item
-
+        item['total_price'] = float(item.get('total_price'))
+        print(item.get('image_urls'))
         try:
             house_mongo = House(**item)
             house_mongo.save()
             return item
         except Exception as e:
+            print(e)
             print('保存数据失败', item)
             return False
 
@@ -33,18 +35,23 @@ class CommunityPipeline(object):
             community_mongo.save()
             return item
         except Exception as e:
+            print(e)
             print('保存数据失败', item)
             return False
 
 
-from scrapy.pipelines.images import ImagesPipeline
+from scrapy.pipelines.images import ImagesPipeline as ImagesPipelineBase
 import scrapy
 
 
-class ImagesPipeline(object):
+class ImagesPipeline(ImagesPipelineBase):
     def get_media_requests(self, item, info):
         for image_url in item['image_urls']:
-            yield scrapy.Request(image_url)
+            yield scrapy.Request(image_url,
+                                 headers={
+                                     'Referer': '',
+                                     'Cookie': ''
+                                 })
 
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]
