@@ -17,22 +17,11 @@ class HouseSpiderSpiderMiddleware(object):
         return s
 
     def process_spider_input(self, response, spider):
+        if response.status != 200:
+            print('抓取异常 URL:{} 状态码:{}'.format(response.url, response.status))
+        else:
+            print('抓取正常 URL:{} 状态码: 200'.format(response.url))
         return None
-
-    def process_spider_output(self, response, result, spider):
-        for i in result:
-            yield i
-
-    def process_spider_exception(self, response, exception, spider):
-        pass
-
-    def process_start_requests(self, start_requests, spider):
-        for r in start_requests:
-            yield r
-
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
-
 
 class HouseSpiderDownloaderMiddleware(object):
     @classmethod
