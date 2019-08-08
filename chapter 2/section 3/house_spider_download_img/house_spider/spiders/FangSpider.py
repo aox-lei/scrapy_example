@@ -9,16 +9,22 @@ class FangSpider(scrapy.Spider):
     '''
     name = 'FangSpider'
     allowed_domains = ['fang.com']
-    custom_settings = {
-        'DEFAULT_REQUEST_HEADERS': {
-            'Referer':
-            'https://esf.fang.com',
-            'Cookie':
-            'global_cookie=ts9lekodlmqrdd8ikgqjno2r91zjy08to2g; budgetLayer=1%7Cbj%7C2019-07-12%2023%3A15%3A42; lastscanpage=0; resourceDetail=1; city=www; Integrateactivity=notincludemc; logGuid=1d7ea639-c548-4b51-b36b-5f33d15bb8fc; __utma=147393320.1729056910.1562944544.1562944544.1563609816.2; __utmc=147393320; __utmz=147393320.1563609816.2.2.utmcsr=search.fang.com|utmccn=(referral)|utmcmd=referral|utmcct=/captcha-verify/redirect; __utmt_t0=1; __utmt_t1=1; __utmt_t2=1; g_sourcepage=undefined; unique_cookie=U_tixt3tpiedn0brb7m4t9pl9fd2zjyb8wtwc*4; __utmb=147393320.12.10.1563609816'
-        }
-    }
 
     def start_requests(self):
+        yield scrapy.Request(url='https://esf.fang.com',
+                             cookies={
+                                 'city':
+                                 'www',
+                                 'global_cookie':
+                                 'tixt3tpiedn0brb7m4t9pl9fd2zjyb8wtwc',
+                                 'unique_cookie':
+                                 'U_tixt3tpiedn0brb7m4t9pl9fd2zjyb8wtwc'
+                             },
+                             dont_filter=True,
+                             callback=self._start_request,
+                             meta={'cookiejar': 1})
+
+    def _start_request(self):
         yield self.request_list()
 
     def request_list(self, page=1):
@@ -32,6 +38,7 @@ class FangSpider(scrapy.Spider):
                               dont_filter=True,
                               meta={
                                   'page': page,
+                                  'cookiejar': 1
                               })
 
     def parse(self, response):
@@ -49,18 +56,6 @@ class FangSpider(scrapy.Spider):
                     yield response.follow(info_url_css[0],
                                           callback=self.parse_house_info,
                                           dont_filter=True)
-
-        # if response.meta['page'] == 1:
-        #     total_pages = response.css(
-        #         'div.page_al p:nth-last-child(1)::text').get()
-        #     if not total_pages:
-        #         total_pages = response.css(
-        #             'div.fanye span:nth-last-child(1)::text').get()
-        #     if total_pages:
-        #         total_pages = int(
-        #             total_pages.replace('共', '').replace('页', ''))
-        #         for _page in range(2, total_pages + 1):
-        #             yield self.request_list(page=_page)
 
     def parse_house_info(self, response):
         item = HouseItemLoader(HouseItem(), response)
@@ -87,11 +82,6 @@ class FangSpider(scrapy.Spider):
                 item.add_css('image_urls', 'img::attr("data-src2")')
 
         yield item.load_item()
-
-        # community_url = '{}{}/{}'.format(
-        #     'https://',
-        #     response.css('div.rcont > a::attr("href")').get(), 'xiangqing')
-        # yield scrapy.Request(community_url, callback=self.parse_community)
 
     def parse_community(self, response):
         item = CommunityItemLoader(CommunityItem(), response)

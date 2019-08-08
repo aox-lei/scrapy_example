@@ -52,7 +52,7 @@ COOKIES_ENABLED = True
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'house_spider.middlewares.HouseSpiderDownloaderMiddleware': 0,
+    'house_spider.middlewares.HouseSpiderDownloaderMiddleware': 542,
     'house_spider.middlewares.ProxyMiddleware': 544,
 }
 

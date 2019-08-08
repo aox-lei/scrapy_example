@@ -7,7 +7,6 @@
 
 from scrapy import signals
 from furl import furl
-from scrapy.http.cookies import CookieJar
 
 
 class HouseSpiderSpiderMiddleware(object):
@@ -40,7 +39,6 @@ class HouseSpiderDownloaderMiddleware(object):
     def from_crawler(cls, crawler):
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        s.cookie_jar = CookieJar()
 
         return s
 
