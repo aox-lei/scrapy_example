@@ -12,6 +12,7 @@ scrapy = "*"
 ipython = "*"
 mongoengine = "*"
 pillow = "*"
+furl = "*"
 
 [requires]
 python_version = "3.6"
