@@ -6,6 +6,7 @@ verify_ssl = false
 [dev-packages]
 yapf = "*"
 pylint = "*"
+jupyter = "*"
 
 [packages]
 scrapy = "*"
