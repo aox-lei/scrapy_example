@@ -33,3 +33,41 @@ class CcidcomSpider(scrapy.Spider):
 
     def parse_error(self, response):
         pass
+
+
+class CcidcomFormSpider(scrapy.Spider):
+    name = 'CcidcomFormSpider'
+
+    def start_requests(self):
+        yield scrapy.FormRequest(url='http://www.ccidcom.com/user/dologin.do',
+                                 formdata={
+                                     'username': '你的账号',
+                                     'password': '你的登录密码'
+                                 },
+                                 callback=self.after_login)
+
+    def after_login(self, response):
+        print('返回的数据: {}'.format(response.text))
+
+
+class CcidcomFromResponseSpider(scrapy.Spider):
+    name = 'CcidcomFromResponseSpider'
+
+    def start_requests(self):
+        # 先访问表单所在的页面
+        yield scrapy.Request('http://www.dcic-china.com/login/index.html',
+                             callback=self.parse)
+
+    def parse(self, response):
+        # 这个方法会将上一个表单页面的资源传入, 并且自动解析表单元素
+        # 然后补足你提供的表单的值(你自定义的值可能会覆盖表单页面的值)
+        yield scrapy.FormRequest.from_response(response,
+                                               formdata={
+                                                   'username': '你的账号',
+                                                   'password': '你的密码',
+                                                   'code': '1111'
+                                               },
+                                               callback=self.after_login)
+
+    def after_login(self, response):
+        print('返回的数据: {}'.format(response.css('p.error::text').get()))
