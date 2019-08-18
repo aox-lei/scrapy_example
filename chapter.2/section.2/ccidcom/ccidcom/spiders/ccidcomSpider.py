@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+
 from ccidcom.items import DocumentItem
 
 
